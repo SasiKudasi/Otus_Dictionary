@@ -8,7 +8,6 @@ namespace Otus_Dictionary
 {
     public class OtusDictionary
     {
-        private string _value;
         private string[] _storage;
         private int _size = 32;
         public void Add(int key, string value)
@@ -36,18 +35,34 @@ namespace Otus_Dictionary
                 if (value == null || value == "")
                 {
                     throw new ArgumentException("Значение не может быть пустым");
-
                 }
                 else
                 {
-                    key = GetHash(key);
-                    _storage[key] = value;
+
+                    if (_storage[GetHash(key)] != null)
+                    {
+                        IncreaseArray();
+                        key = GetHash(key) + 1;
+                        _storage[key] = value;
+                    }
+                    else
+                    {
+                        key = GetHash(key);
+                        _storage[key] = value;
+                    }
                 }
             }
         }
-        int GetDictionaryCount()
+
+        private void IncreaseArray()
         {
-            int count = 0;
+            _size *= 2;
+            Array.Resize(ref _storage, _size);
+        }
+
+        private int GetDictionaryCount()
+        {
+            var count = 0;
             for (int i = 0; i < _storage.Length; i++)
             {
                 if (_storage[i] != null)
@@ -57,16 +72,16 @@ namespace Otus_Dictionary
         }
         public string GetValue(int key)
         {
-
-            if (_storage[GetHash(key)] == null)
+            key = GetHash(key);
+            if (_storage[key] == null)
             {
                 throw new ArgumentException($"Значений по адресу {key} не найдено");
             }
-            return _storage[GetHash(key)];
+            return _storage[key];
         }
-        int GetHash(int key)
+        private int GetHash(int key)
         {
-            int hash = key % _storage.Length;
+            var hash = key % _storage.Length;
             return hash;
         }
     }

@@ -11,8 +11,7 @@
             var key2 = int.TryParse(Console.ReadLine(), out key);
             Console.WriteLine("Введите значение");
             string value = Console.ReadLine();
-            dictionary.Add(key, value);
-            
+            dictionary.Add(key, value);            
             Console.WriteLine("Введите ключ");
             key2 = int.TryParse(Console.ReadLine(), out key);
             Console.WriteLine("Введите значение");
