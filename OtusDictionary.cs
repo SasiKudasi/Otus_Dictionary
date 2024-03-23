@@ -38,26 +38,17 @@ namespace Otus_Dictionary
                 }
                 else
                 {
-
-                    if (_storage[GetHash(key)] != null)
+                    key = GetHash(key);
+                    if (_storage[key] != null)
                     {
-                        IncreaseArray();
-                        key = GetHash(key) + 1;
-                        _storage[key] = value;
+                        _storage[key] += $" {value}";
                     }
                     else
                     {
-                        key = GetHash(key);
                         _storage[key] = value;
                     }
                 }
             }
-        }
-
-        private void IncreaseArray()
-        {
-            _size *= 2;
-            Array.Resize(ref _storage, _size);
         }
 
         private int GetDictionaryCount()
