@@ -9,24 +9,16 @@ namespace Otus_Dictionary
     public class OtusDictionary
     {
         private string[] _storage;
-        private int _size = 32;
-        public void Add(int key, string value)
-        {
-            if (_storage == null)
-            {
-                if (value == null || value == "")
-                {
-                    throw new ArgumentException("Значение не может быть пустым");
-                }
-                else
-                {
-                    _storage = new string[_size];
-                    key = GetHash(key);
-                    _storage[key] = value;
-                }
+        private int _size;
 
-            }
-            else if (GetDictionaryCount() == _size)
+        public OtusDictionary()
+        {
+            _size = 32;
+            _storage = new string[_size];
+        }
+        public void Add(int key, string value)
+        {            
+            if (GetDictionaryCount() == _size)
             {
                 throw new ArgumentException("Словарь полность заполнен");
             }
@@ -37,14 +29,17 @@ namespace Otus_Dictionary
                     throw new ArgumentException("Значение не может быть пустым");
                 }
                 else
-                {
-                    key = GetHash(key);
-                    if (_storage[key] != null)
+                {                    
+                    if (_storage[GetHash(key)] != null)
                     {
+                        _size *= 2;
+                        Array.Resize(ref _storage, _size);
+                        key = GetHash(key);
                         _storage[key] += $" {value}";
                     }
                     else
                     {
+                        key = GetHash(key);
                         _storage[key] = value;
                     }
                 }
@@ -72,7 +67,7 @@ namespace Otus_Dictionary
         }
         private int GetHash(int key)
         {
-            var hash = key % _storage.Length;
+            var hash = key % _size;
             return hash;
         }
     }
